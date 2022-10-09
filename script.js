@@ -26,6 +26,12 @@ window.addEventListener('load', () => {
             this.height = height;
             this.particlesArray = [];
             this.image = document.getElementById('image-1');
+
+            this.canvasCenterX = this.width * 0.5; // horizontal middle point of canvas
+            this.canvasCenterY = this.height * 0.5;
+            this.imageCenterX = this.canvasCenterX - (this.image.width * 0.5); // horizontal center point of image in the canvas
+            this.imageCenterY = this.canvasCenterY - (this.image.height * 0.5);
+
         }
         init() {
             for (let i = 0; i < 10; i++) {
@@ -34,7 +40,7 @@ window.addEventListener('load', () => {
         }
         draw(context) {
             this.particlesArray.forEach(particle => { particle.draw(context) })
-            context.drawImage(this.image, 0, 0);
+            context.drawImage(this.image, this.imageCenterX, this.imageCenterY);
 
         }
     }
