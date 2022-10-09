@@ -10,8 +10,8 @@ window.addEventListener('load',() =>{
     class Particle{
         //blueprint to create individual particles
         constructor(){
-            this.x = 200;
-            this.y = 150;
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
             this.size = 100;
         }
         draw(context){
@@ -27,6 +27,7 @@ window.addEventListener('load',() =>{
             this.particlesArray = [];
         }
         init(){
+            this.particlesArray.push(new Particle());
             this.particlesArray.push(new Particle());
         }
         draw(context){
