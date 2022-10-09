@@ -9,9 +9,10 @@ window.addEventListener('load',() =>{
 
     class Particle{
         //blueprint to create individual particles
-        constructor(){
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
+        constructor(effect){ // passing reference of object of class Effect to have access to width and height of canvas, its better preactise.
+            this.effect = effect;
+            this.x = Math.random() * this.effect.width;
+            this.y = Math.random() * this.effect.height;
             this.size = 100;
         }
         draw(context){
@@ -27,8 +28,7 @@ window.addEventListener('load',() =>{
             this.particlesArray = [];
         }
         init(){
-            this.particlesArray.push(new Particle());
-            this.particlesArray.push(new Particle());
+            this.particlesArray.push(new Particle(this)); //we pass the reference to class effect but since we are already inside of it, we use 'this'.
         }
         draw(context){
             this.particlesArray.forEach(particle =>{particle.draw(context)})
