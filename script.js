@@ -17,7 +17,7 @@ window.addEventListener('load', () => {
             this.velocityY = Math.random() * 2 -1;
         }
         draw(context) {
-            context.fillRect(this.x, this.y, this.size, this.size);
+            context.fillRect(this.x, this.y, this.size, this.size); // draws the particles as black squares, default color is black
         }
         update() {
             // this method defines movement of each particle.
@@ -41,10 +41,15 @@ window.addEventListener('load', () => {
             this.imageCenterY = this.canvasCenterY - (this.image.height * 0.5);
 
         }
-        init() {
-            for (let i = 0; i < 100; i++) {
-                this.particlesArray.push(new Particle(this)); //we pass the reference to class effect but since we are already inside of it, we use 'this'.
-            }
+        init(context) {
+            // for (let i = 0; i < 100; i++) {
+            //     this.particlesArray.push(new Particle(this)); //we pass the reference to class effect but since we are already inside of it, we use 'this'.
+            // }
+            context.drawImage(this.image,this.imageCenterX,this.imageCenterY);
+            const particles = context.getImageData(0,0,this.width,this.height); // analyses and gets data of image inside specified area.
+            console.log(particles);
+
+
         }
         draw(context) {
             this.particlesArray.forEach(particle => { particle.draw(context) });
@@ -56,7 +61,7 @@ window.addEventListener('load', () => {
     }
 
     const effect = new Effect(canvas.width, canvas.height);
-    effect.init();
+    effect.init(ctx);
     
 
 
@@ -69,7 +74,7 @@ window.addEventListener('load', () => {
 
         requestAnimationFrame(animate); // passing the parent method will make the call in a loop, this is a built in function.
     }
-    animate();
+    //animate();
     
 
     // ctx.fillRect(0,0,100,200); // draws rectagle using built in method
