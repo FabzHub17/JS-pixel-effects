@@ -10,12 +10,20 @@ window.addEventListener('load', () => {
         //blueprint to create individual particles
         constructor(effect) { // passing reference of object of class Effect to have access to width and height of canvas, its better preactise.
             this.effect = effect;
-            this.x = Math.random() * this.effect.width;
-            this.y = Math.random() * this.effect.height;
-            this.size = 100;
+            this.x = Math.random() * this.effect.width; // x position on canvas
+            this.y = Math.random() * this.effect.height; // y position on canvas
+            this.size = 5;
+            this.velocityX = 1;
+            this.velocityY = 1;
         }
         draw(context) {
             context.fillRect(this.x, this.y, this.size, this.size);
+        }
+        update() {
+            // this method defines movement of each particle.
+            this.x += this.velocityX;
+            this.y += this.velocityY;
+            
         }
     }
 
@@ -34,28 +42,35 @@ window.addEventListener('load', () => {
 
         }
         init() {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 100; i++) {
                 this.particlesArray.push(new Particle(this)); //we pass the reference to class effect but since we are already inside of it, we use 'this'.
             }
         }
         draw(context) {
-            this.particlesArray.forEach(particle => { particle.draw(context) })
+            this.particlesArray.forEach(particle => { particle.draw(context) });
             context.drawImage(this.image, this.imageCenterX, this.imageCenterY);
-
+        }
+        update() {
+            this.particlesArray.forEach(particle => { particle.update()});
         }
     }
 
     const effect = new Effect(canvas.width, canvas.height);
     effect.init();
-    effect.draw(ctx);
-    console.log(effect);
+    
 
 
 
     const animate = () => {
         // animation loop to make everything animated and interactive
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        effect.draw(ctx);
+        effect.update();
 
+        requestAnimationFrame(animate); // passing the parent method will make the call in a loop, this is a built in method.
     }
+    animate();
+    
 
     // ctx.fillRect(0,0,100,200); // draws rectagle using built in method
     // ctx.drawImage(image1,100,100,400,300);
