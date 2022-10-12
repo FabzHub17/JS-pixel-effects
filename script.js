@@ -13,8 +13,8 @@ window.addEventListener('load', () => {
             this.x = Math.random() * this.effect.width; // x position on canvas
             this.y = Math.random() * this.effect.height; // y position on canvas
             this.size = 5;
-            this.velocityX = 1;
-            this.velocityY = 1;
+            this.velocityX = Math.random() * 2 -1;
+            this.velocityY = Math.random() * 2 -1;
         }
         draw(context) {
             context.fillRect(this.x, this.y, this.size, this.size);
@@ -67,7 +67,7 @@ window.addEventListener('load', () => {
         effect.draw(ctx);
         effect.update();
 
-        requestAnimationFrame(animate); // passing the parent method will make the call in a loop, this is a built in method.
+        requestAnimationFrame(animate); // passing the parent method will make the call in a loop, this is a built in function.
     }
     animate();
     
