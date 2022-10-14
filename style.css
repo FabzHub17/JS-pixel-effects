@@ -13,9 +13,26 @@
 .controls{
     position: absolute;
     z-index: 100;
+    font-family: 'Bangers', cursive;
 
 }
 
 img{
     display: none;
+}
+
+button{
+    padding: 10px 20px;
+    font-size: 35px;
+    font-family: 'Bangers', cursive;
+    margin:20px;
+    color: whitesmoke;
+    background: #000;
+    transition: .2s;
+    border: none;
+}
+button:hover{
+    background-color: #fff;
+    color: #000;
+    border: 3px solid #000;
 }
