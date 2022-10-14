@@ -10,23 +10,30 @@ window.addEventListener('load', () => {
         //blueprint to create individual particles
         constructor(effect, x, y, color) { // passing reference of object of class Effect to have access to width and height of canvas, its better preactise.
             this.effect = effect;
-            this.x = Math.floor(x); // random assigned x position on canvas for animation.
-            this.y = Math.floor(y); // random assigned y position on canvas for animation.
+            this.x = Math.random() * this.effect.width; // random assigned x position on canvas for animation.
+            this.y = Math.random() * this.effect.height; // random assigned y position on canvas for animation.
             this.originX = Math.floor(x); // original x position of particle on canvas ; math floor is used to round off the value.
             this.originY = Math.floor(y); // original y position of particle on canvas.
             this.color = color;
-            this.size = 5;
+            this.size = this.effect.gap;
             this.velocityX = 0;
             this.velocityY = 0;
+            this.ease = 0.02; // this value determines how fast the image reassembles itself. (slow== very low number)
         }
         draw(context) {
             context.fillStyle = this.color;  // assigns color to the particle.
-            context.fillRect(this.x, this.y, this.size, this.size); // draws the particles as black squares, default color is black
+            context.fillRect(this.x, this.y, this.size, this.size); // draws the particles as black squares, default color is black, this is a built in method.
         }
         update() {
             // this method defines movement of each particle.
-            this.x += this.velocityX;
-            this.y += this.velocityY;
+            this.x += (this.originX - this.x) * this.ease;
+            this.y += (this.originY - this.y) * this.ease;
+        }
+        warp() {
+            // to change random position of particles when btn is pressed
+            this.x = Math.random() * this.effect.width;
+            this.y = Math.random() * this.effect.height;
+            this.ease = 0.05;
         }
     }
 
@@ -42,7 +49,7 @@ window.addEventListener('load', () => {
             this.canvasCenterY = this.height * 0.5;
             this.imageCenterX = this.canvasCenterX - (this.image.width * 0.5); // horizontal center point of image in the canvas.
             this.imageCenterY = this.canvasCenterY - (this.image.height * 0.5);
-            this.gap = 5; // num of pixels to skip to decrease resolution and save computer power.
+            this.gap = 3; // num of pixels to skip to decrease resolution and save computer power.
 
         }
         init(context) {
@@ -75,6 +82,9 @@ window.addEventListener('load', () => {
         update() {
             this.particlesArray.forEach(particle => { particle.update() });
         }
+        warp() {
+            this.particlesArray.forEach(particle => { particle.warp() });
+        }
     }
 
     const effect = new Effect(canvas.width, canvas.height);
@@ -92,8 +102,13 @@ window.addEventListener('load', () => {
     }
     animate();
 
+    // warp btn
 
-    // ctx.fillRect(0,0,100,200); // draws rectagle using built in method
-    // ctx.drawImage(image1,100,100,400,300);
+    const warpBtn = document.getElementById('warpBtn');
+    warpBtn.addEventListener('click', () => {
+        effect.warp();
+    });
+
+
 
 }); 
