@@ -19,6 +19,11 @@ window.addEventListener('load', () => {
             this.velocityX = 0;
             this.velocityY = 0;
             this.ease = 0.02; // this value determines how fast the image reassembles itself. (slow== very low number)
+            this.dx = 0;
+            this.dy = 0;
+            this.force = 0;
+            this.angle = 0;
+            this.friction = 0.85;
         }
         draw(context) {
             context.fillStyle = this.color;  // assigns color to the particle.
@@ -33,21 +38,27 @@ window.addEventListener('load', () => {
             this.dy = this.effect.mouse.y - this.y; // distance y from particle
 
             //this.distance = Math.sqrt(this.dx * this.dx + this.dy *this.dy) // pi theorem to calculate distance
-            this.distance = this.dx * this.dx + this.dy * this.dy; // not using Math.sqrt since it is a very demanding operation,
+            this.distance = this.dx * this.dx + this.dy * this.dy; // not using Math.sqrt since it is a very demanding operation.
             // instead we give the mouse radius, in effect class, a very high value.
 
             //----------------------------------------------
 
-            
+            this.force = - this.effect.mouse.radius / this.distance; // - sign used for the direction of force.
+            if (this.distance < this.effect.mouse.radius) {
+                // if the mouse cursor if closer to the particles..
+                this.angle = Math.atan2(this.dy, this.dx); // built in mathod needs y coordinate and then x.
+                this.velocityX += this.force * Math.cos(this.angle); //  cos value ranges between +1 and -1.
+                this.velocityY += this.force * Math.sin(this.angle);
+            }
 
-            this.x += (this.originX - this.x) * this.ease;
-            this.y += (this.originY - this.y) * this.ease;
+            this.x += (this.velocityX *= this.friction) + (this.originX - this.x) * this.ease;
+            this.y += (this.velocityY *= this.friction) + (this.originY - this.y) * this.ease;
         }
         warp() {
             // to change random position of particles when btn is pressed
             this.x = Math.random() * this.effect.width;
             this.y = Math.random() * this.effect.height;
-            this.ease = 0.05;
+            this.ease = 0.04;
         }
     }
 
@@ -65,11 +76,11 @@ window.addEventListener('load', () => {
             this.imageCenterY = this.canvasCenterY - (this.image.height * 0.5);
             this.gap = 3; // num of pixels to skip to decrease resolution and save computer power.
             this.mouse = {
-                radius:3000,
-                x:undefined,
-                y:undefined
+                radius: 3000,
+                x: undefined,
+                y: undefined
             }
-            window.addEventListener('mousemove', event =>{
+            window.addEventListener('mousemove', event => {
                 this.mouse.x = event.x; //assigns x coordinate of the mouse point
                 this.mouse.y = event.y;
 
