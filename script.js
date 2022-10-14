@@ -26,6 +26,20 @@ window.addEventListener('load', () => {
         }
         update() {
             // this method defines movement of each particle.
+
+            //calculating mouse curser distance from particle
+
+            this.dx = this.effect.mouse.x - this.x; //distance x from particle
+            this.dy = this.effect.mouse.y - this.y; // distance y from particle
+
+            //this.distance = Math.sqrt(this.dx * this.dx + this.dy *this.dy) // pi theorem to calculate distance
+            this.distance = this.dx * this.dx + this.dy * this.dy; // not using Math.sqrt since it is a very demanding operation,
+            // instead we give the mouse radius, in effect class, a very high value.
+
+            //----------------------------------------------
+
+            
+
             this.x += (this.originX - this.x) * this.ease;
             this.y += (this.originY - this.y) * this.ease;
         }
@@ -50,6 +64,16 @@ window.addEventListener('load', () => {
             this.imageCenterX = this.canvasCenterX - (this.image.width * 0.5); // horizontal center point of image in the canvas.
             this.imageCenterY = this.canvasCenterY - (this.image.height * 0.5);
             this.gap = 3; // num of pixels to skip to decrease resolution and save computer power.
+            this.mouse = {
+                radius:3000,
+                x:undefined,
+                y:undefined
+            }
+            window.addEventListener('mousemove', event =>{
+                this.mouse.x = event.x; //assigns x coordinate of the mouse point
+                this.mouse.y = event.y;
+
+            });
 
         }
         init(context) {
@@ -89,7 +113,6 @@ window.addEventListener('load', () => {
 
     const effect = new Effect(canvas.width, canvas.height);
     effect.init(ctx);
-    console.log(effect);
 
 
     const animate = () => {
