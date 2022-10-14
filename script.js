@@ -8,10 +8,13 @@ window.addEventListener('load', () => {
 
     class Particle {
         //blueprint to create individual particles
-        constructor(effect) { // passing reference of object of class Effect to have access to width and height of canvas, its better preactise.
+        constructor(effect,x,y,color) { // passing reference of object of class Effect to have access to width and height of canvas, its better preactise.
             this.effect = effect;
-            this.x = Math.random() * this.effect.width; // x position on canvas
-            this.y = Math.random() * this.effect.height; // y position on canvas
+            this.x = Math.random() * this.effect.width; // random assigned x position on canvas for animation.
+            this.y = Math.random() * this.effect.height; // random assigned y position on canvas for animation.
+            this.originX = Math.floor(x); // original x position of particle on canvas ; math floor is used to round off the value.
+            this.originY = Math.floor(y); // original y position of particle on canvas.
+            this.color = color;
             this.size = 5;
             this.velocityX = Math.random() * 2 - 1;
             this.velocityY = Math.random() * 2 - 1;
@@ -56,7 +59,7 @@ window.addEventListener('load', () => {
                     const green = pixels[index + 1];
                     const blue = pixels[index + 2];
                     const alpha = pixels[index + 3];
-                    const color = rgb(red,green,blue);
+                    const color = "rgb(" + red + "," + green + "," + blue + ")" ;
 
                     if(alpha > 0){
                         //if pixel is not transparent(i.e. > 0) then create a particle
